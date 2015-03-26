@@ -1,0 +1,30 @@
+
+
+\subsubsection*{Abstract}
+Here is the abstract.
+
+
+\subsubsection*{Background}
+
+
+ 
+
+
+Because of the current hardware landscape, the greatest concern when considering a database system for a given workload is minimizing the amount of I/Os, or the amount of data transfers between main memory and CPU registers. The amount of time that a transfer takes dominates the query processing time in a DBMS. 
+
+
+Recently, systems in which tables are partitioned into their seperate columns has been considered as an alternative to the the classic approach in which tables are partitioned into rows for analyitic, data warehousing workloads in which queries require the reading of the majority of a table during processing\cite{columnOverview}. By partitioning a table in to columns rather than rows, a database system only needs to read in the attributes that the query needs to access, rather than entire tuples as in a row-store. With the growing trend of fat tables where only few attributes are accesed by queries in data warehousing workloads, this columnar access plan becomes very advantagous and can greatly reduce the amount of pages that must be read in for processing\cite{now}.
+
+
+In a column-store system, columns are stored as data objects sequentially on a disk, making this system ideal for workloads where queries access a large percentage of the tuples, but only on a few specified attributes\cite{now}. With row-store systems, sequentially sorting through the tables and only operating on few attributes can be very wasteful in terms of I/O and bandwidth consumption. For example, if you have a table with 20 columns and 1,000 records, but you only want to calculate an aggregate value on a single attribute, you must bring all the records in from main memory, whereas with a column-store system, you just have to bring in the column on which the aggregate value is to be calculated, which is about 1/20th of the size if all attributes are of the same size. With even larger and fatter tables, this can reduce the I/O cost on similiar queries by many orders of magnitude. On the other hand, if only one tuple is requested by a query, a row-based system would only have to scan the the table once, then return the qualifying tuple, whereas a column-store system would require 20 random I/Os to reconstruct the qualifying tuple from the seperate columns. Thus, it is best to consider a column-store system for an analytic workload, as opposed to a transaction-based workload. 
+
+
+Since a single column stores a single attribute of a row, which is usually of a single data type, columns can be compressed much more effectively than in a row-store where rows with multiple attributes and data types are stored contiguously on a disk. Many compression approaches can be taken in a column-store systems, including a dynamic programming approach where each column is compressed using the most effective method given the type of the attribute, and these approaches will be discussed later. An additional benefit of compressed columns taking up significantly less memory is that redundant columns can be stored in different sort orders, adding to the opportunities for query optimization\cite{now}. With an effective compression strategy, column-store systems can reduce the amount of I/Os to an even greater extent over a row-store system in an analytic workload.
+
+
+On the other hand, with column-stores comes the problem of the materialization of tuples, or the reconstruction of the rows from the seperate columns\cite{now}. Late-materialization, or the delaying of joining tuples until as late as possible, takes greater advantage of the compression of the columns as well as the column-wise partion of the table, but there are situations in which early materialization is ideal. With materialization comes the processing cost of decompressing the columns, and the benefits of columnar storage can be lost if data must be decompressed in order to operate on this. As such, another problem that is considered in column-stores is the operation on compressed data\cite{now}. With late-materialization, to take full advantage of the compressed state of the columns, it is ideal to operate on the compressed columns because the compressed columns take up significantly less space in memory. In this way, cache misses can be reduced, thus reducing the tranfer time to the CPU registers\cite{slides}. Early-materialization, however, has the benefit that once the required rows are brought in to memory and the tuples reconstructed, the tuples can be processed by a row-store based query processor, making more adaptable to classic row-store relational database systems.
+
+
+
+
+
