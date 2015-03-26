@@ -1,0 +1,54 @@
+
+\documentclass[11pt]{article}
+
+\usepackage{alltt,epsfig,amsmath,amssymb}
+\usepackage{fullpage} % one inch margins
+
+\usepackage{listings}
+\lstset{
+  breaklines=true,
+  keepspaces=true,
+  numbers=left
+}
+
+\usepackage{fancyhdr}
+\fancypagestyle{plain}{
+  \fancyhf{}% Clear header/footer
+  \fancyhead[L]{AUTHORS}
+  \fancyfoot[C]{\thepage}
+  \fancyhead[R]{COMS 4112}
+}
+
+\pagestyle{plain}   % Set page style to plain.
+
+\author{AUTHOR 1 (UNI 1) - AUTHOR 2(UNI 2)}
+\title{Modern Topics in Relational Database Systems}
+
+
+\begin{document}
+\setlength{\parskip}{.1 in}
+
+\maketitle
+\newpage
+
+\subsection*{Introduction}
+
+%
+% Intro tex
+%
+
+% each section is configured in a separate file
+\section*{Cloud}
+\input{cloud/main} \newpage
+
+\section*{Column-Stores}
+\input{column_store/main} \newpage
+
+\section*{OLTP}
+\input{oltp/main} \newpage
+
+% citations
+\include{bib/main}
+
+\end{document}
+
