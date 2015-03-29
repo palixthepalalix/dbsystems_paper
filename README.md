@@ -1,6 +1,4 @@
-
-
-# Paper
+# dbsystems_paper
 
 Basically each section is separated out into it's own file for easy navigation of the project.
 This is done using the `\input` command which inserts a latex file inline to the location where it is called.
