@@ -1,0 +1,23 @@
+
+
+
+\subsection*{Compression}
+
+
+
+Compressing data in a database system provides two advantages. Reading in compressed data into memory reduces I/O cost because less data needs to be read into memory. It also saves memory bandwidth and takes advantage of CPU cycles by allowing compressed data to be read into memory. Because CPUs are improving at a greater rate than memory bandwidth, extra CPU cycles can be utilized to decompress data without a huge overhead cost\cite{now}.
+
+
+Clearly compression algorithms can be used on both column-store systems and row-store systems, however the compression ratios prove to be much more effective in column-store environments because columnar data has high information entropy (the values are similar)\cite{colvsrow}. For example, a sorted column that contains an attribute with few unique values can be stored as {value, count} pairs, where count is the number of tuples that contain the value. This method of compression is called run-length encoding\cite{now}. 
+
+
+An additional technique that can be utilized in column-store systems is frequency partitioning, in which values of a certain attribute that are closely linked or related are stored on the same disk page. Organizing the data this way further optimizes compression schemes, such as dictionary encoding, which constructs a table for an entire page orted on frequency and represents values in the column as integer positions in the table\cite{now}. 
+
+
+\subsection*{Operating on Compressed Data}
+
+
+Query execution can be optimized by operating directy on compressed data. Operating on compressd data saved I/O by reading in less data, and also requires no decompression of the data which adds CPU cycles. However, this creats added complexity to the execution engine because the engine must consider the compression scheme of the data it is operating on. 
+
+
+For each operation, having a series of if statements to decide how to operate on the compressed data gets highly complicated. This complication can be alleviated by abstracting the properties of compressed data. A query engine can process the data in compression blocks, and can operate on the block as an array\cite{compression}. Operating on compressed data in blocks allows for simplification of operations, and also it allows the query engine to default to a lazy decompression scheme whenever operating on compressed data is not possible.

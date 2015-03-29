@@ -1,0 +1,13 @@
+\subsection*{Vectorized/Block Processing}
+
+
+In column-store systems, blocks of data can be processed at a time, as opposed to processing each value at a time. This method, called block or vectorized processing, is one of the main innovations of the VectorWise system. Processing data in blocks decreased the overhead in per-tuple processing, as well as utilizing parallel processing thus taking advantage of CPU speeds\cite{colvsrow}. Vectors in a column-store system can be represented as an C-array of a certain data structure, and the size of the vectors can be computed so they fit into the L1 cache. In Monet DB, the vector size is the size of the table, so it may be difficult to fit this into the L1 cache\cite{now}. 
+
+
+Improvements to Monet have been made by VectorWise in order to utilize and optimize this vectorized processing. Vectorized processing occupies a middle-ground between tuple-at-a-time processing and the full table processing utilized by Monet DB. An iterative approach is used, such as in tuple-at-a-time processing, however, with each next() call, an array of values is returned, as opposed to a single value\cite{colvsrow}. In this way, CPU parallelism can be explioted, and bandwidth is saved due to the smaller size of the batches of data.
+
+
+Vectorized processing reduces the amount of function calls made by the query interpretor\cite{colvsrow}. For any function that needs to be called for a specific tuple for tuple-at-a-time processing, a single call can be made for each vector instead, reducing the amount of calls.
+
+
+Row-store systems can also process data in blocks, however the layout of data in rows is less lenient towards this implementation. In a row-store, attributes need to be extracted from the rows in order to be operated on, whereas in a column-store, the attributes are already seperate from their tuples, and can thus be directly operated on like an array\cite{colvsrow}. 

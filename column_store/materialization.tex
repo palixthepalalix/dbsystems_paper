@@ -1,0 +1,21 @@
+\subsection*{Materialization}
+
+
+Materialization in a column-store system refers to the process of constructing tuples from the different attributes pulled from each of the columns. Determining at what time a system will materialize the tuples depends on the execution engine and the query optimizer.
+
+
+Column-stores that store data on the disk in columns, but have a row-store execution engine, utilize early materialization. Because a row-store engine is used, tuples must be constructed before they are read into the engine. This implementation does not utilize the full benefits of column-store systems it cannot take advantage of vectorized processing as well as other column optimizations.
+
+
+There are four advantages to late materialization\cite{colvsrow}:
+
+
+\begin{enumerate}
+	\item Some select and aggregate operators do not require tuple construction, so the materialization overhead can be completely avoided.
+	\item Since data must be decompressed before tuples are reconstructed, late materialization allows for the operation on compressed data.
+	\item Cache misses are reduced because irrelevant attributes are not being read into the CPU.
+	\item Vectorized processing can be utilized.
+\end{enumerate}
+
+
+

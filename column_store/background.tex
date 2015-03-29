@@ -5,11 +5,6 @@ Here is the abstract.
 
 
 \subsubsection*{Background}
-
-
- 
-
-
 Because of the current hardware landscape, the greatest concern when considering a database system for a given workload is minimizing the amount of I/Os, or the amount of data transfers between main memory and CPU registers. The amount of time that a transfer takes dominates the query processing time in a DBMS. 
 
 
@@ -23,6 +18,10 @@ Since a single column stores a single attribute of a row, which is usually of a 
 
 
 On the other hand, with column-stores comes the problem of the materialization of tuples, or the reconstruction of the rows from the seperate columns\cite{now}. Late-materialization, or the delaying of joining tuples until as late as possible, takes greater advantage of the compression of the columns as well as the column-wise partion of the table, but there are situations in which early materialization is ideal. With materialization comes the processing cost of decompressing the columns, and the benefits of columnar storage can be lost if data must be decompressed in order to operate on this. As such, another problem that is considered in column-stores is the operation on compressed data\cite{now}. With late-materialization, to take full advantage of the compressed state of the columns, it is ideal to operate on the compressed columns because the compressed columns take up significantly less space in memory. In this way, cache misses can be reduced, thus reducing the tranfer time to the CPU registers\cite{slides}. Early-materialization, however, has the benefit that once the required rows are brought in to memory and the tuples reconstructed, the tuples can be processed by a row-store based query processor, making more adaptable to classic row-store relational database systems.
+
+
+
+
 
 
 

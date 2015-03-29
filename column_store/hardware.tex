@@ -1,0 +1,17 @@
+\subsection*{Hardware Trends and Column Stores}
+
+
+Since the 1980s, there has been a gap between the growth of disk capacity and the performance improvement of disk transfer and seek, whereas relational database systems have changed little. Disk capacities have increased 10,000 times, from 80 MB to 800 GB, where as transfer rates have only increased 65 times from 1.2 MB/sec to 80 MB/sec and average seek times have only increased 10 times from 30 ms to 3 ms\cite{slides}. Additionally, CPU speeds increased about 5,000 to 10,000 times\cite{now}.Based on these changes, database systems should be taking advantage of the increased disk space, while cutting down on the amount of random I/Os and disk transfers. While relational database systems already cut down on the amount of random I/Os as much as possible, the way that rows are layed out on database pages in a classic row-store model does not lend to compression techniques very well, thus it is difficult to cut down on bandwidth usage in this model. 
+
+
+Row-store is especially wasteful in an analytical workload environment where not many columns of a table are being utilized. In this model, rows are grouped into pages and stored into a file, so, for example, if each row of a table is 100 bytes and each page fits 8KB, but a query only requires 10 bytes worth of attributes for this column, the query can only get 80 records for each page I/O, whereas the query could be bringing in 800 records for each page I/O if only the requiered were stored on a page.
+
+
+In scan bound queries, memory stalls take up almost 60\% of the execution time, where almost 90\% of the stalls are L2 cache stalls, which are a result of how the rows are laid out in a row-store DBMS. If the size of a row on a page is greater than the size of the L2 cache, which is about 256 KB, then if the DBMS transfers each row, this can result in one L2 cache miss per row and wastes CPU cycles in the process\cite{slides}. By bringing in only the needed attributes, DBMSs can reduce the amount of wasted CPU cycles by reducing the amount of L2 cache misses. The methods used by column-store systems will be explored in detail later.
+
+
+Additionally, it is difficult for a program to take advantage of parallel processing. In a scan operation of a table in a database system where pages are organized in a row-by-row fashion, it is difficult to break down the scan into equal pieces without needing synchronization. On the other hand, if the attributes were stored by column, then the scan could easily be partitioned and handed out to different CPUs for processing\cite{CPU}. For queries that do not access full tuples can take advantage of the great increases in CPU speed as well as decreasing bandwidth usage by not bringing in unwanted attributes.
+
+
+Based on the specified hardware improvements, we will now look at the optimizations a column-store system provides to take advantage of CPU and disk capacity improvements. The following sections will explore the ways in which a column-store system can use CPU cycles to save disk bandwidth. 
+

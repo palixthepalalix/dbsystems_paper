@@ -1,0 +1,28 @@
+\subsection*{Architecture}
+
+
+There are a few ways that one can design a column-store architecture, each with their own methods of optimization regarding the benefits of a column-store DBMS, and each with different ways of dealing with the problems that arise in a column-based system.
+
+
+Before we can discuss these different architectures, it is important to understand how tables can be vertically partitioned and how these partitions are stored on a disk page. It is possible to pair each column entry in a column with a tuple identifier and store this on a page, in order to match the appropriate values for each tuple together, however, storing this tuple identifier for each entry on a disk page becomes very costly. 
+
+
+Alternatively, virtual IDs can be used. A system using virtual IDs would use the offset of the tuple in a column as the tuple identifier. If fixed-width values are used, it is very easy to pair the tuple attrubutes together, as you just multiply the position in the column by the offset of the column on the page\cite{now}. However, column-stores also wish to take advantage of compression techniques may not have fixed length columns, thus virtual IDs must be computed in a different way. This will be explored later with compression techniques.
+
+
+
+	\textbf{of column files on disk} %C-store
+	One method that can be used is store store a set of column files contiguously on a disk. This colleciton of columns can be soreted on some attribute. These groupings of columns are called projections, and each column in this projection can be compressed using a column-specific compression scheme. This part of the database is called the RS, or the read optimized store, as it is optimal for reading in data, but due to the many different projections, writes become very costly. There is also a write-optimized store, or the WS, where inserts and deletes are recorded. There is a process that moves the tuples stored in the WS to the RS in bulk, thus the WS is much smaller than the RS.\cite{cstore}. This technique is utilized by C-Store and Vertica systems. 
+	\par
+	In this architecture, a scan may have to scan both the RS and the WS in order to get a full view of the table at the current position in time, which complicates query access plans. To scan the WS, a row-store query executor is usually required, on top of the column-store query exectutor. An alternative to scanning both tables is to just scan the RS, and the query just selects a timestamp up to which the query will be historically accurate. If true up-to-date information is not required for the system, this method can provide a great increase in performance because you would not have to provide a complicated method of dealing with WS data.
+
+
+
+	\textbf{column at a time} %Monet/vectorwise
+	Another method is to store columns in a column-at-a-time format, utilized by Monet DB and later VectorWise systems. In this model, columns are stored in a BAT (Binary Assosiation Table), which is a table of object identifiers and value pairs, where all objects of the same tuple are given the same object identifier. In the base columns, the pairs are stored in ascending order that is determined by their insertion order, so the position in the table corresponds to the object identifier, and works like the virtual IDs described above. Additionally, Monet uses memory mapped files so that the data can be expressed the same way in memory and on the disk\cite{monet}.
+	\par
+	Because of the way data is represented in memory, the CPU can exploit batch processing, or vectorized processing, instead of processing each value one at a time, which takes advantage of the fast CPU speeds.
+\par
+	Similar to the previous implemenation used by C-Store, Monet handles updates by using a collection of pending updates for each column, and when it scans, it scans the column as well as the pending update column\cite{now}. Pending columns are merged into the base columns in a periodic process simlar to C-Store.
+	\par
+	Unlike C-store, however, Monet DB does not utilize compression on columns. VectorWise improves on Monet DB by providing a system that takes advantage of the vertical partitioning by compression the columns on disk\cite{now}, and providing many methods for operating on these compressed columns that will be discussed later.

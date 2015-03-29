@@ -1,0 +1,15 @@
+\subsection*{Hybrid Techniques}
+
+
+
+	\textbf{Columnar Storage Only}
+
+
+	One design that is more of a hybrid between the full column-store system and a row-store system is a system that vertically partitions the tables on the disk, but when the columns are brought into memory, they are materialized into their tuples and operated on by row execution systems\cite{now}.
+
+
+	This reduces the overhead in a system that wishes to transition from a row-oriented system to a column-based system, however it fails to take advantage of the benefits of column based storage in main memory, such as operating on each column at a time instead of an entire tuple, which reduces cache misses.
+
+
+
+	\textbf{native column-store designs} %sql and ibm blu/blink 
