@@ -1,1 +1,15 @@
 \subsection*{Distributed Graph Databases}
+
+
+One of the challenges of graph databases is that they are difficult to partition onto many machines. If there are connections between nodes on different machines, queries that follow these edges will be very costly. Additionally, graph databases, by their relational nature, have very poor locality, so distributing the data exhasperates this problem\cite{parallelgraph}. 
+
+
+
+Distributed graph systems will store data in a distributed file system, where each line in the file records a vertex and it's adjacency list. Processing graph data is not a normalized process, but most parallel systems use the following procedure\cite{blogel}.
+\par
+\textbf{Processing}
+\par
+A graph system processes a job in three stages.
+The first of these phases is the locking phase. In this phase, each worker thread/process reads in vertices to main memory, then exchanges vertices with other workers so it has all of its assigned vertices.
+The second phase is the iterative computing phase. In this phase, a worker processes it's vertices in sequence, in parallel with other workers. These workers operating in parallel also exchnage messages with one another.
+The third phase is the dumping phase. This phase is much like a write-out in a relational DBMS. Each worker writes out the processed vertices\cite{blogel}\cite{pregel}.

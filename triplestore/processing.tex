@@ -1,1 +1,17 @@
 \subsection*{Processing Graph Data}
+
+
+Processing graph data is not a normalized process, but most parallel systems use the following procedure\cite{blogel}.
+A graph system processes a job in three stages.
+The first of these phases is the locking phase. In this phase, each worker thread/process reads in vertices to main memory, then exchanges vertices with other workers so it has all of its assigned vertices.
+The second phase is the iterative computing phase. In this phase, a worker processes it's vertices in sequence, in parallel with other workers. These workers operating in parallel also exchnage messages with one another.
+The third phase is the dumping phase. This phase is much like a write-out in a relational DBMS. Each worker writes out the processed vertices\cite{blogel}\cite{pregel}.
+
+%3 phase structure
+
+
+%locking
+
+%iterative computing
+
+%dumping

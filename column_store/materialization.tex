@@ -18,4 +18,10 @@ There are four advantages to late materialization\cite{colvsrow}:
 \end{enumerate}
 
 
+Late materialization is one of the main innovations of MonetDB. MonetDB takes an input of BATs and produces an output BAT. However, Monet DB requires full materialization of intermediate BAT results. After each operation on a column, Monet DB requires that identifies qualifying tuples\cite{monetcpu}. Vectorized processing is an improvement upon Monet DB provided by VectorWise that avoids the penalties incurred by full materialization\cite{vectorwise}. Vectorized processing will be discussed in the next section.
+
+
+Another method that is more flexible, but also employs late materialization is demonstrated in Vertica and IBM BLU. These technologies utilize column-groups, which are columns that are multilple columns stored together on a page, like a mini table\cite{now}. Based on the access patterns of the data, these column groupings can be utilized.
+
+
 

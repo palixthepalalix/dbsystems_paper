@@ -3,8 +3,37 @@
 \subsubsection*{Comparison to Row-Stores}
 %discuss hybrid technologies
 
+Many of the column-store optimizations observed in the above discussion can also be applied to row-store systems. However, we have also shown that optimizations, such as compression, are not as effective in a row-store environment due to the way records are laid out on a page.
+
+
+Additionally, there have been some hybrid technologies that have tried to incorporate the best aspects of column stores and row stores. One of these hybrid systems is called PAX. The PAX system relies on classic row-store techniques when storing data on a disk page, but within the disk page, the data is vertically partitioned and stored by column. The idea behind PAX is to improve cache performance, while not affecting I/Os\cite{PAX}. By vertically partitioning the records within a page, PAX allows for the loading of many values of the same attribute to be loaded into the cache. Although PAX still requires the scanning of all attributes of a row, the required attributes are already seperated from the tuples and unwanted attributes need not be read in for processing. 
+
+
+Although this model may perform better on some queries due to the reduction of cache stalls, it fails to utilize many of the optimizations that column-stores allow. Although column-specific compression is possible in this model, it does not seem feasible because you would have to have a compression scheme for each attribute on a page, and the added commplexity this would incur due to decompression schemes and metadata regarding the page locations and compression schemes of all attributes seems to outweigh the benefits.
+
+
+Also, because PAX uses a row-store engine, early materialization of the tuples is required for query execution, so PAX recieves none of the benefits of late materialization\cite{PAX}.
+
+
+In OLAP workloads, the above argument implies that a using a full column-store system is more beneficial than using a hybrid system such as PAX. Compression and late materialization are shown to be the most effective optimizations in column-stores, studies showing a factor of two and a factor of three performance improvement for each optimization respectively\cite{colvsrow}. As can be deduced from the discussion above, in order to take full advantage of these optimizations, it is pertinent to have a from-scratch engine to process a job. Late-materialization requires an engine that can process attributes seperately, and compression benefits from an engine that can operate on compressed data.
+
+
+However, what has not yet been discussed is column-store performance in a transactional, write-heavy workload. In a row-store system, a simple scan to retrieve and edit the specified tuple is all that is needed for an insert, however in a column store, you need to update each of the columns in storage, and this becomes increasingly difficult with compressed data. Monet DB and C-Store, deal with this by having seperate tables that are write optimized, and are periodically merged with the column-store data\cite{cstore}\cite{monet}. However, this complicates access plans because it requires looking at both the column-store and the write optimized tables. Table updates are much simpler to deal with in a row-store system, and require less disk seeks. In a write-heavy environment, many of the optimizations applied to column-stores become burdens on the performance, so a row-store system is more applicable for this situation.
 
 
 
 
 \subsubsection*{Evaluation}
+
+%in memory databases kdb+ and SQL
+
+
+The importance of columnar databases can be seen from the development of column-store capabilities by many major technology companies. For example, Microsoft has developed column indexes for SQL server. The indexes make up full column-store systems where each column is laid out serperately on different pages. SQL server column indexes support some compression and batch-mode processing, or vectorized processing\cite{sql}. 
+
+Amazon Redshift also presents a column-store database meant for processing large datasets in an analytic workload. Redshift utilizes column storage to enable more in-memory processing. The query optimizer takes advantage of MPP (massively parallel processing) through execution of jobs over many nodes, as well as the columnar storage\cite{redshift}. This makes Redshift very efficient in a OLAP environment.
+
+
+The landscape of read-optimized column-store systems is heavily researched and many systems exist that exploit the benefits. However, in-memory columnar databases, such as kdb+ by Kx Systems, explore the benefits of having a column-store in-memory database in a workload environment where aggregates are not maintained by transactions\cite{kxsystems}. Instead of relying on transactions to keep track of aggregate tuples, these in-memory column-stores keep a delta table of changes made to the table that are merged periodically, as in C-Store and Monet. Applications can calculate the aggregate values based on the previous known value and the changes in the delta table, and the cache can also reflect aggregate values\cite{inmemory}. These database systems simplify data entry transactions by having ``cold stores" that contain data that is no longer being updated, and ``hot stores" that contain data that is currently being updated, and keeps a log and checkpoint data in secondary storage instead of redundant data\cite{inmemory}. In this way, these in-memory systems only need to update the delta table on an update, and the delta table only need be searched if hot data is queried.
+
+
+These in-memory systems, such as kdb+, are ideal for enterprise workloads, where, for example, data is only updated within a month, and is closed to updates beyond that point. Because of the performance benefits of in-memory systems and the importance of enterprise database systems, I think that this is the most exciting field for innovation in the realm of column-stores.

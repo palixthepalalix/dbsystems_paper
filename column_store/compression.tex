@@ -14,6 +14,9 @@ Clearly compression algorithms can be used on both column-store systems and row-
 An additional technique that can be utilized in column-store systems is frequency partitioning, in which values of a certain attribute that are closely linked or related are stored on the same disk page. Organizing the data this way further optimizes compression schemes, such as dictionary encoding, which constructs a table for an entire page orted on frequency and represents values in the column as integer positions in the table\cite{now}. 
 
 
+The C-Store system heavily relies on compression. The idea behind this is that operating on and passing compressed data saves bandwidth at the expense of CPU overhead in decompression, lazy decompression or operations on compressed data\cite{compression}. Additionally, C-Store utilizes the extra memory space that is allowed due to compression to store columns in many different sort orders, allowing for optimizing access plans based on the query, similar to the way row-stores utilize indices.
+
+
 \subsection*{Operating on Compressed Data}
 
 

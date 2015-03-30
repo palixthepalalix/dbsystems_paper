@@ -4,16 +4,30 @@
 Graph databases are a collection of nodes and edges that are used to store data. A graph database does not require a key or identifier to link it to another record, it just uses edges to connect adjacent and related nodes. A relational database, in contrast, uses keys to relate values in one table to a value in another table, and finding the related values may require a scan of the entire table, whereas in a graph-based system, one need only to look at the nodes adjacent to the given node to find related nodes. Graph databases offer many optimizations for associative datasets.
 
 
+Graph databases are beneficial for querying datasets such as social networks, disease tracking and consumer research. These datasets are all queried in such a way where relationships between objects are exploited to gain analytical information. Additionally, these datasets also require an adaptable representation in which attributes can be added and subtracted to values with ease. For example, if a relationship between two people on social media is initiated, all that needs to be done in a graph based model is to create the relation between the two nodes. Additionally, on a social media site, a user might have children or not have children, or they may have three pets or only one pet. All of this data can easily be communicated through a graph based database, whereas in a relational database system, variable attributes are very difficult to keep track of, and usually result in fatter tables or unnecessarily long CLOBs of data on a certain attribute.
 
 
 
-One way in which graph data is represented is through RDF (Resource Description Framework). 
+One way in which graph data is represented is through RDF (Resource Description Framework). In RDF, data is represented through triples. A data entity has subject-predicate-object components\cite{RDF}.
+For example, a triple could look like ``Bob owns a dog", where Bob is the subject, the predicate is ``owns" and the object is a dog.
+Graphically, this can be interpreted as a node for the subject ``Bob", connected to the node ``dog" with the edge that has the value of ``owns". This representation of data can be referred to as a triplestore.
+
+
+Another way in which graph data can be represented is in a property graph model. A property graph contains nodes that that can hold a number of attributes, with relationships providing directed connections (edges) between two nodes\cite{neoj4}.
+
+
+One main difference between triplestores, or data represented through RDF triples, and other graph databases is that RDF execution engines focus on triples rather than representing the data graphically. In the property graph model above, a node can have many attributes and have many edges or relationships that link it to the same node. In an RDF setting, a triple has one attribute (subject), and a predicate pointing to the object value. In an RDF engine, a query might require many self-joins in relation to a generalized graph-based approach\cite{RDFvsGraph}. It should be noted that RDF data can be processed by generalized graph systems as well. These differences will be discussed in further detail. 
+
+
+In both these models, it is easy to observe that graph database systems are more adaptable to changing schemas and growing data sets. In a relational database, adding an attribute to a table is extremely costly, whereas in a graph database, you just add a predicate edge to point to some value, without needing to add the attribute to other objects of a similar type.
+
+
+
+
 
 
 %3 phase structure
 %loading
 %iterative computing
 %dumping
-%heavily assosiated databases
 %SPARQL and RDF
-%property based

@@ -7,6 +7,9 @@ In column-store systems, blocks of data can be processed at a time, as opposed t
 Improvements to Monet have been made by VectorWise in order to utilize and optimize this vectorized processing. Vectorized processing occupies a middle-ground between tuple-at-a-time processing and the full table processing utilized by Monet DB. An iterative approach is used, such as in tuple-at-a-time processing, however, with each next() call, an array of values is returned, as opposed to a single value\cite{colvsrow}. In this way, CPU parallelism can be explioted, and bandwidth is saved due to the smaller size of the batches of data.
 
 
+Vectorized processing in VectorWise allows for pipelined execution, which is how it takes advantage of fast CPU speeds. Pipelined execution is an innovation of tuple-at-a-time processing, however, by only processing a single tuple CPU speeds become overcome by the interpretation overhead\cite{vectorwise}. By passing in vectors instead of tuples, the interpretation only need be done for each set of vectors.
+
+
 Vectorized processing reduces the amount of function calls made by the query interpretor\cite{colvsrow}. For any function that needs to be called for a specific tuple for tuple-at-a-time processing, a single call can be made for each vector instead, reducing the amount of calls.
 
 

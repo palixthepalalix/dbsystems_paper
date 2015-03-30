@@ -1,0 +1,20 @@
+\subsection*{RDF}
+
+
+Since data items are represented as triples in RDF, thse triples can be stored easily in a table. The property aspect of a triple defines relationships between objects in the graph\cite{RDF}. An RDF engine that we will consider is called RDF-3x. 
+The language that is used to query RDF data is called SPARQL. SPARQL queries RDF data by matching patterns in the graph. For example, if you wish to query for restaraunts in a specific region, you must pattern match for a triple that is a resturaunt, and also has a predicate region pointing to the specified region value.
+
+The RDF-3x system stores all triples in a compressed clustered B+ tree\cite{RDF}. Because the triple values can be comprised of very long string literals, just as any attribute in a RDBMS, it is pertinent to compress the data by first using a dictionary compression. This reduces the string literals to ids. Since SPARQL searches for matching patterns in the graph, reducing the triples to these ids requires only a range scan since it lies in a clustered B+ tree.
+
+
+RDF-3x also utilizes aggregated indexes. Aggregated indexes take advantage of the fact that full triples need not be used for certain operations. Each aggregated index only stores two pairs of a triple along with an aggregated count of how many triples contain these two values. Six permutations of subject, predicate and object create an index on each permutation\cite{RDF}. This provides optimization for queries that only require partial tuples. This index system reduces the overhead of queries on an RDF system by reducing I/O operations.
+
+\par
+\textbf{Partitioning in a Distributed System}
+\par
+With large RDF databases, data must be distributed among many machines. Since the data is already in a graph-based RDF format, graph partitioning can be used to partition data onto machines with closely related data. This allows the parallelization of queries that have a path length of two or more\cite{scalableRDF}. 
+
+
+During vertex partitioning, triples with the predicate rdf:type are removed\cite{scalableRDF}. This is because it is more difficult to come up with disjoint partitions if the graph is more connected. 
+
+%hadoop processing vs rdf processing
