@@ -13,3 +13,20 @@ A graph system processes a job in three stages.
 The first of these phases is the locking phase. In this phase, each worker thread/process reads in vertices to main memory, then exchanges vertices with other workers so it has all of its assigned vertices.
 The second phase is the iterative computing phase. In this phase, a worker processes it's vertices in sequence, in parallel with other workers. These workers operating in parallel also exchnage messages with one another.
 The third phase is the dumping phase. This phase is much like a write-out in a relational DBMS. Each worker writes out the processed vertices\cite{blogel}\cite{pregel}.
+\par
+\textbf{Pregel}
+Pregel is a graph system that attempts to deal with the problem of processing queries on a large graph database. Pregel is a vertex-centric method for computation on a graph, meaning that operations are performed on vertices of the graph. Many other systems have built upon Pregel, such as Giraph and GPS. Improvements on the model introduced by Pregel will be discussed later.
+% partition verts in cluster
+% BSP? 
+% compute() function
+% message combiner
+% combine()
+
+
+In Pregel's model, vertices are given unique identifiers, and are operated on by a compute() function that is user defined. After a graph is initialized, Pregel computes an algorithm in a sequence of supersteps which are synchronized amongst eachother, but within each superstep, vertices are operated on by this compute() function in parallel. When work on all vertices has haulted, Pregel produces an output\cite{pregel}.
+
+
+\par
+\par
+\textbf{Blogel}
+\par

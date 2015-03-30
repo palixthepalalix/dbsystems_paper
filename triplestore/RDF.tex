@@ -18,3 +18,11 @@ With large RDF databases, data must be distributed among many machines. Since th
 During vertex partitioning, triples with the predicate rdf:type are removed\cite{scalableRDF}. This is because it is more difficult to come up with disjoint partitions if the graph is more connected. 
 
 %hadoop processing vs rdf processing
+
+\par
+\textbf{Semantic Web and RDF}
+\par
+As stated previously, one of the main motivations behind RDF is to share data across the web. XML also attempts to enable the web communication of a database, however it falls short in many respects. Most notably, the way in which data is expressed in XML is very variable, and the same data can be expressed in many different ways, and will thus create many different proccessing trees making that data difficult to query by other applications\cite{semantic}. RDF data, on the other hand, consists of pointers to data. Theoretically, no matter how the data is represented in the database, the data model can be derived and the data can be uniquely represented in RDF triple format.
+
+
+Now, the problem with trying to communicate data using an RDF model is normalizing the semantics across a network. This is done by defining an ontology, which is contains a hierarchy of descriptive terms for a system\cite{semantic}. With a defined ontology, RDF data can be easily shared, however establishing a generalized ontology for use in all domains is a daunting task, the details of which are beyond the scope of this discussion.

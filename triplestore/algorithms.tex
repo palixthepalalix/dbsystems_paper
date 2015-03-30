@@ -1,0 +1,25 @@
+\subsection*{Graph Algorithms}
+
+This section will go over some common graph algorithms in order to show how graphically represented data can be useful in certain environments.
+
+\textbf{Page Rank}
+\par
+The page rank algorithm is used by Google to rank search engine results. This is an iterative algorithm that computes the page rank of each vertex of a directed graph.
+The page rank algorithm calculates the probability that a random walk will arrive at each vertex on the graph. 
+This algorithm considers the amount of links to each node on the graph (i.e. how many nodes point to that node), as well as the page rank of the nodes that relate to it\cite{google}. In this way, a node with less relations than another may still have a higher ranking if it is related to other nodes with high rankings.
+Although most famously used to rank search pages in a Google search, the Page Rank algorithm can also be used to return results that most closely fit a query based on important relationships. This an important application of the relationships between nodes.
+\par
+\textbf{BFS}
+\par
+Breadth first search is a graph traversal algorithm that searches an undirected, unweighted graph. Each related node of a node is explored and assigned a distance from the root node, then the algorithm explores each of the related nodes of it's related nodes, ect.
+Given a vertex r, a BFS algorithm looks for a path to another vertex v such that the path from r to v falls within the minimum specified edges\cite{BFS}.
+The problem of BFS in large, distributed graph databases is difficult, but BFS has many applications. For example, advertisers can utilize BFS to advertise a product to a person's relationships within a variable degree of seperation.
+\par
+\textbf{Triangle Counting}
+\par
+The triangle counting algorithm is meant to measure the statistics of a graph. It counts how many triangles exist in a graph, i.e. how many pairs of related nodes share another common related node\cite{triangles}. 
+This algorithm has many applications based on showing the related-ness of nodes based on shared relations. 
+For example, for any number of the citations that are given in this paper, one of the citations may also include a citation within it's own document to one of my other citations. This would could be interpreted as a thematic relationship between my paper and another.
+This method is used to find subsets of web pages with a common topic, as well as spam detection, among many others\cite{triangles}.
+\par
+Although this is by no means an exhaustive list of graph algorithms, it gives a general idea about the types of queries that graph databases are optimized for. It would be very difficult and costly to perform any of these queries in a RDBMS. For example, for the page rank algorithm, if data was represented in a relational database, there would most likely be a table for pages and a table for links on a page orgainized by page id. The algorithm would result in many scans of the data and would incur great memory cost. In a graph system, the relationships between nodes is exploited and the algorithm becomes much less complex to implement.

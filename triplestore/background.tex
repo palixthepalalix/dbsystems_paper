@@ -13,10 +13,13 @@ For example, a triple could look like ``Bob owns a dog", where Bob is the subjec
 Graphically, this can be interpreted as a node for the subject ``Bob", connected to the node ``dog" with the edge that has the value of ``owns". This representation of data can be referred to as a triplestore.
 
 
-Another way in which graph data can be represented is in a property graph model. A property graph contains nodes that that can hold a number of attributes, with relationships providing directed connections (edges) between two nodes\cite{neoj4}.
+Another way in which graph data can be represented is in a property graph model. A property graph contains nodes that that can hold a number of attributes, with relationships providing directed connections (edges) between two nodes\cite{neoj4}. Generalized graph engines are required to process these graphs. 
 
 
-One main difference between triplestores, or data represented through RDF triples, and other graph databases is that RDF execution engines focus on triples rather than representing the data graphically. In the property graph model above, a node can have many attributes and have many edges or relationships that link it to the same node. In an RDF setting, a triple has one attribute (subject), and a predicate pointing to the object value. In an RDF engine, a query might require many self-joins in relation to a generalized graph-based approach\cite{RDFvsGraph}. It should be noted that RDF data can be processed by generalized graph systems as well. These differences will be discussed in further detail. 
+The objective of RDF data is to optimize web publishing and sharing data over the web. URIs (Universial Resource Identifiers) are used in RDFs so others can point at your data and reference it in their own databases. The structure of RDF triples also lends nicely to translate into structured data because of the strict <subject-predicate-object> structure. In a property graph, a node can have many different attributes and relationships, which makes it difficult to represent as structured data. However, property graphs are more suited for schema-less applications where analysis of the relationships between data is required.
+
+
+It should be noted that there are other graph models, but the subset that will be considered in this discussion includes RDF and property graph models. 
 
 
 In both these models, it is easy to observe that graph database systems are more adaptable to changing schemas and growing data sets. In a relational database, adding an attribute to a table is extremely costly, whereas in a graph database, you just add a predicate edge to point to some value, without needing to add the attribute to other objects of a similar type.
